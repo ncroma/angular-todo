@@ -1,0 +1,6 @@
+.checked {
+  background-color: green;
+}
+.unchecked {
+  background-color: yellow;
+}

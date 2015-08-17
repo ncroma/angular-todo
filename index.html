@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="libs/angular.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<title></title>
+</head>
+<body ng-app="app">
+	<div ng-controller ="AppCtrl as AppCtrl">
+
+		<form ng-submit="AppCtrl.submit()">
+   			<input type="text" placeholder="What needs to be done?" ng-model = "AppCtrl.todo.text"></input>
+   			<button>Go!</button>
+		</form>
+
+		<button ng-if="AppCtrl.todos.length"; ng-click="AppCtrl.changeTodos()">{{AppCtrl.todosChecked() ? 'uncheck all' : 'check all'}}</button>
+
+		<table>
+			<tr ng-repeat="otodo in AppCtrl.todos | filter:AppCtrl.filterState">
+				<td ng-class="{checked:otodo.completed, unchecked:!otodo.completed}">{{otodo.text}}</td>
+				<td>
+					<!--<button ng-click="otodo.completed = true">Check</button>
+					<button ng-click="otodo.completed = false">Uncheck</button>-->
+					<button ng-click="otodo.completed = !otodo.completed">{{otodo.completed ? 'uncheck' : 'check'}}</button>
+					<button ng-click="AppCtrl.remove(otodo)">x</button>
+
+				</td>
+			</tr>
+			<button ng-if="AppCtrl.howManyChecked()" ng-click="AppCtrl.clearCompleted()">Clear completed</button>
+		</table>
+	
+
+		<label ng-if="AppCtrl.todos.length"><input type="radio" name="sex" value="All" ng-click="AppCtrl.filterState = {}" >All</input></label>
+		<label ng-if="AppCtrl.todos.length"><input type="radio" name="sex" value="Active" ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:false}">Active</input></label>
+		<label ng-if="AppCtrl.todos.length"><input type="radio" name="sex" value="Complete" ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:true}">Complete</input></label>
+
+		<!--<button ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {}">All</button>
+		<button ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:false}">Active</button>
+		<button ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:true}">Complete</button>-->
+		<div ng-if="AppCtrl.todos.length">{{AppCtrl.howManyUnchecked()}} {{AppCtrl.howManyUnchecked() > 1 ? 'items' : 'item'}} left!</div>
+
+		
+
+	</div>
+</body>
+</html>
