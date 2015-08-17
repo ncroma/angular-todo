@@ -27,10 +27,8 @@
 
 				</td>
 			</tr>
-			<button ng-if="AppCtrl.howManyChecked()" ng-click="AppCtrl.clearCompleted()">Clear completed</button>
 		</table>
-	
-
+		
 		<label ng-if="AppCtrl.todos.length"><input type="radio" name="sex" value="All" ng-click="AppCtrl.filterState = {}" >All</input></label>
 		<label ng-if="AppCtrl.todos.length"><input type="radio" name="sex" value="Active" ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:false}">Active</input></label>
 		<label ng-if="AppCtrl.todos.length"><input type="radio" name="sex" value="Complete" ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:true}">Complete</input></label>
@@ -38,6 +36,11 @@
 		<!--<button ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {}">All</button>
 		<button ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:false}">Active</button>
 		<button ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:true}">Complete</button>-->
+
+		<p>
+		<button ng-if="AppCtrl.howManyChecked()" ng-click="AppCtrl.clearCompleted()">Clear completed</button>
+		</p>
+
 		<div ng-if="AppCtrl.todos.length">{{AppCtrl.howManyUnchecked()}} {{AppCtrl.howManyUnchecked() > 1 ? 'items' : 'item'}} left!</div>
 
 		
