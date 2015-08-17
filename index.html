@@ -24,7 +24,6 @@
 					<button ng-click="otodo.completed = false">Uncheck</button>-->
 					<button ng-click="otodo.completed = !otodo.completed">{{otodo.completed ? 'uncheck' : 'check'}}</button>
 					<button ng-click="AppCtrl.remove(otodo)">x</button>
-
 				</td>
 			</tr>
 		</table>
@@ -38,12 +37,16 @@
 		<button ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:true}">Complete</button>-->
 
 		<p>
-		<button ng-if="AppCtrl.howManyChecked()" ng-click="AppCtrl.clearCompleted()">Clear completed</button>
+			<button ng-if="AppCtrl.howManyChecked()" ng-click="AppCtrl.clearCompleted()">Clear completed</button>
 		</p>
 
-		<div ng-if="AppCtrl.todos.length">{{AppCtrl.howManyUnchecked()}} {{AppCtrl.howManyUnchecked() > 1 ? 'items' : 'item'}} left!</div>
+		<ng-pluralize count="AppCtrl.howManyUnchecked()"
+                 when="{'1': 'One item left!',
+                     '2': 'Two items left!',
+                     'other': 'Many items left!'}" ng-if="AppCtrl.todos.length && !AppCtrl.todosChecked()">
+		</ng-pluralize>
 
-		
+		</div>
 
 	</div>
 </body>
