@@ -4,3 +4,8 @@
 .unchecked {
   background-color: yellow;
 }
+
+div.tablewrapper {
+	height: 560px;
+	overflow-y: auto;
+}

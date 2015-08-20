@@ -1,31 +1,62 @@
+function StorageService(){
+
+	this.setStorage = function SetStorage(key, content){
+
+		/*            content.forEach(function(obj){delete obj.$$hashKey});
+			-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	
+		angular.toJson retira a informação desnecessária que o angular usa para obter JSON limpo*/
+
+		window.localStorage.setItem(key, angular.toJson(content));
+	};
+
+	this.getStorage = function GetStorage(key){
+		if (!window.localStorage.getItem(key)){
+			return [];
+		}
+		return JSON.parse(window.localStorage.getItem(key));		
+	};
+}
+
 angular.module('app', [])
-	.controller('AppCtrl', [
-		 function() {
+	.factory('fabrica', function Fabrica(){
+		return {prop1:"fabrica",prop2:20};
+	})
+	.service('storageService', [StorageService])
+    .controller('AppCtrl', ['$scope','fabrica','storageService',
 
-			var self = this;
-			this.todos = [];
-			this.filterState = {};
-			this.checkTodos = false;
+        function($scope, fabrica, storageService) {
 
+            var self = this;
 
-			this.submit = function() {
-				if (self.todo) {
-					self.todo.completed = false;
-					self.todos.push(self.todo);
-					self.todo = null;
-				}
+            this.todos = storageService.getStorage('todos');
+            this.filterState = {};
+            this.checkTodos = false;
 
-			};
+            this.persist = function(key, content){
+            	storageService.setStorage(key, content);
+            };
 
-			this.changeTodos = function() {
+            this.submit = function() {
+                if (self.todo) {
+                    self.todo.completed = false;
+                    self.todos.push(self.todo);
+                    self.todo = null;
+           
+                    self.persist('todos', self.todos);
+                }
 
-				for (var i = self.todos.length - 1; i >= 0; i--) {
-					self.todos[i].completed = !(self.checkTodos);
-				};
-			};
+            };
 
-			/*
-			this.todosChecked2 = function() {
+            this.changeTodos = function() {
+
+                for (var i = self.todos.length - 1; i >= 0; i--) {
+                    self.todos[i].completed = !(self.checkTodos);
+                };
+                self.persist('todos', self.todos);
+            };
+
+            /*
+			this.todosChecked = function() {
 				if (self.todos.length) {
 					for (var i = self.todos.length - 1; i >= 0; i--) {
 						if (!self.todos[i].completed) {
@@ -39,18 +70,19 @@ angular.module('app', [])
 			};
 			*/
 
-			this.todosChecked = function() {
-				return self.checkTodos = self.todos.every(function(todo) {
-					return todo.completed;
-				});
-			};
+            this.todosChecked = function() {
+                return self.checkTodos = self.todos.every(function(todo) {
+                    return todo.completed;
+                });
+            };
 
-			this.remove = function(todo) {
-				self.todos.splice(self.todos.indexOf(todo), 1);
-			};
+            this.remove = function(todo) {
+                self.todos.splice(self.todos.indexOf(todo), 1);
+                self.persist('todos', self.todos);
+            };
 
 
-			/*this.howManyChecked = function() {
+            /*this.howManyChecked = function() {
 
 				return self.todos.map(function(todo) {
 					return todo.completed ? 1 : 0;
@@ -59,31 +91,32 @@ angular.module('app', [])
 				}, 0);
 			}*/
 
-			this.howManyChecked = function() {
+            this.howManyChecked = function() {
 
-				return self.todos.reduce(function(a, b) {
-					return a + (b.completed ? 1 : 0);
-				}, 0);
-			}
+                return self.todos.reduce(function(a, b) {
+                    return a + (b.completed ? 1 : 0);
+                }, 0);
+            }
 
-			this.howManyUnchecked = function() {
+            this.howManyUnchecked = function() {
 
-				return self.todos.reduce(function(a, b) {
-					b = !b.completed ? 1 : 0;
-					return a + b;
-				}, 0);
-			}
+                return self.todos.reduce(function(a, b) {
+                    b = !b.completed ? 1 : 0;
+                    return a + b;
+                }, 0);
+            }
 
-			this.clearCompleted = function() {
-				for (var i = self.todos.length - 1; i >= 0; i--) {
-					if (self.todos[i].completed) {
-						self.todos.splice(i, 1);
-					}
-				};
-			}
+            this.clearCompleted = function() {
+                for (var i = self.todos.length - 1; i >= 0; i--) {
+                    if (self.todos[i].completed) {
+                        self.todos.splice(i, 1);
+                    }
+                };
+               self.persist('todos', self.todos);
+            }
 
 
-			/*
+            /*
 			this.howMany = function(comportamento, todos) {
 				var howMany = 0;
 				for (var i = todos.length - 1; i >= 0; i--) {
@@ -144,5 +177,5 @@ angular.module('app', [])
 				});
 			}
 			*/
-		}
-	])
+        }
+    ])
