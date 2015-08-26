@@ -13,29 +13,28 @@
    			<button>Go!</button>
 		</form>
 
-		<button ng-if="AppCtrl.todos.length"; ng-click="AppCtrl.changeTodos()">{{AppCtrl.todosChecked() ? 'uncheck all' : 'check all'}}</button>
+		<button ng-if="todosPorOrganizar.length"; ng-click="AppCtrl.changeTodos()">{{AppCtrl.todosChecked() ? 'uncheck all' : 'check all'}}</button>
 
 		<div class = "tablewrapper">
-		<table>
-			<tr ng-repeat="otodo in AppCtrl.todos | filter:AppCtrl.filterState | orderBy:'-$$hashKey'">
-				<td ng-class="{checked:otodo.completed, unchecked:!otodo.completed}">{{otodo.text}}</td>
-				<td>
-					<!--<button ng-click="otodo.completed = true">Check</button>
-					<button ng-click="otodo.completed = false">Uncheck</button>-->
-					<button ng-click="otodo.completed = !otodo.completed; AppCtrl.persist('todos', AppCtrl.todos)">{{otodo.completed ? 'uncheck' : 'check'}}</button>
-					<button ng-click="AppCtrl.remove(otodo)">x</button>
-				</td>
-			</tr>
-		</table>
+			<table ng-repeat="todos in AppCtrl.todosPorDia | orderBy:'dia':true">
+			<!---<tr ng-repeat="ostodos in AppCtrl.todos | filter:AppCtrl.filterState | orderBy:'date':true">-->
+				<tr>
+					<th><u>{{todos.dia | date: 'dd, MMMM yyyy'}}</u></th>
+				</tr>
+				
+				<tr ng-repeat="todo in todos.listaTodos | filter:AppCtrl.filterState | orderBy:'date':true">
+					<td ng-class="{checked:todo.completed, unchecked:!todo.completed}">{{todo.text}}</td>
+					<td> - {{todo.date | date: 'HH:mm'}}</td>
+					<td><button ng-click="todo.completed = !todo.completed; AppCtrl.persist('todos', AppCtrl.todos)">{{todo.completed ? 'uncheck' : 'check'}}</button></td>
+					<td><button ng-click="AppCtrl.remove(todo)">x</button></td>
+						
+				</tr>
+			</table>
 		</div>
 		
-		<label ng-if="AppCtrl.todos.length"><input type="radio" name="sex" value="All" ng-click="AppCtrl.filterState = {}" >All</input></label>
-		<label ng-if="AppCtrl.todos.length"><input type="radio" name="sex" value="Active" ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:false}">Active</input></label>
-		<label ng-if="AppCtrl.todos.length"><input type="radio" name="sex" value="Complete" ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:true}">Complete</input></label>
-
-		<!--<button ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {}">All</button>
-		<button ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:false}">Active</button>
-		<button ng-if="AppCtrl.todos.length" ng-click="AppCtrl.filterState = {completed:true}">Complete</button>-->
+		<label ng-if="todosPorOrganizar.length"><input type="radio" name="sex" value="All" ng-click="AppCtrl.filterState = {}" >All</input></label>
+		<label ng-if="todosPorOrganizar.length"><input type="radio" name="sex" value="Active" ng-if="todosPorOrganizar.length" ng-click="AppCtrl.filterState = {completed:false}">Active</input></label>
+		<label ng-if="todosPorOrganizar.length"><input type="radio" name="sex" value="Complete" ng-if="todosPorOrganizar.length" ng-click="AppCtrl.filterState = {completed:true}">Complete</input></label>
 
 		<p>
 			<button ng-if="AppCtrl.howManyChecked()" ng-click="AppCtrl.clearCompleted()">Clear completed</button>
@@ -44,8 +43,9 @@
 		<ng-pluralize count="AppCtrl.howManyUnchecked()"
                  when="{'1': 'One item left!',
                      '2': 'Two items left!',
-                     'other': 'Many items left!'}" ng-if="AppCtrl.todos.length && !AppCtrl.todosChecked()">
+                     'other': 'Many items left!'}" ng-if="todosPorOrganizar.length && !AppCtrl.todosChecked()">
 		</ng-pluralize>
+
 
 		</div>
 
