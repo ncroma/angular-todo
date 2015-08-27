@@ -1,11 +1,21 @@
 .checked {
-  background-color: green;
+ 	background-color: green;
 }
 .unchecked {
-  background-color: yellow;
+	background-color: yellow;
+}
+.mouse {
+	cursor: pointer; cursor: hand;
 }
 
 div.tablewrapper {
-	height: 540px;
+	height: 600px;
 	overflow-y: auto;
+}
+
+button.fix {
+    width:75px;
+    display:inline-block;
+    text-align:center;
+    cursor: pointer; cursor: hand;
 }
