@@ -13,17 +13,6 @@
    			<button>Go!</button>
 		</form>
 
-		<button ng-if="AppCtrl.todosPorOrganizar.length"; ng-click="AppCtrl.changeTodos(AppCtrl.todosPorOrganizar, AppCtrl.checkTodos)">{{AppCtrl.todosChecked() ? 'uncheck all' : 'check all'}}</button>
-
-		<button ng-if="AppCtrl.howManyChecked()" ng-click="AppCtrl.clearCompleted()">Clear Completed</button>
-
-		<ng-pluralize count="AppCtrl.howManyUnchecked()"
-                 when="{'1': 'One item left!',
-                     '2': 'Two items left!',
-                     'other': 'Many items left!'}" ng-if="AppCtrl.todosPorOrganizar.length && !AppCtrl.todosChecked()">
-		</ng-pluralize>
-
-
 		<div class = "tablewrapper">
 			<table ng-repeat="todos in AppCtrl.todosPorDia | filter:AppCtrl.filterStateDay | orderBy:'dia':true">
 			<!---<tr ng-repeat="ostodos in AppCtrl.todos | filter:AppCtrl.filterState | orderBy:'date':true">-->
@@ -44,7 +33,17 @@
 		<label ng-if="AppCtrl.todosPorOrganizar.length"><input type="radio" name="sex" value="Active" ng-if="AppCtrl.todosPorOrganizar.length" ng-click="AppCtrl.filterStateTodo = {completed:false}; AppCtrl.filterStateDay = {todosChecked:false}">Active</input></label>
 		<label ng-if="AppCtrl.todosPorOrganizar.length"><input type="radio" name="sex" value="Complete" ng-if="AppCtrl.todosPorOrganizar.length" ng-click="AppCtrl.filterStateTodo = {completed:true}; AppCtrl.filterStateDay = {todosUnchecked:false}">Complete</input></label>
 
-		</div>
+		<p>
+		<button ng-if="AppCtrl.todosPorOrganizar.length"; ng-click="AppCtrl.changeTodos(AppCtrl.todosPorOrganizar, AppCtrl.checkTodos)">{{AppCtrl.todosChecked() ? 'uncheck all' : 'check all'}}</button>
+
+		<button ng-if="AppCtrl.howManyChecked()" ng-click="AppCtrl.clearCompleted()">Clear Completed</button>
+
+		<ng-pluralize count="AppCtrl.howManyUnchecked()"
+                 when="{'1': 'One item left!',
+                     '2': 'Two items left!',
+                     'other': 'Many items left!'}" ng-if="AppCtrl.todosPorOrganizar.length && !AppCtrl.todosChecked()">
+		</ng-pluralize>
+		</p>
 
 	</div>
 </body>
